@@ -71,6 +71,7 @@ rule makedir:
         dir1 = directory("output/1.QCs"),
         dir3 = directory("output/3.QCsRmAdaptors/")
     message: "creating directories..."
+    threads: 1
     shell: "mkdir -p {output.dir1} {output.dir3}"
     
 rule fastqc_raw_reads:
@@ -81,6 +82,7 @@ rule fastqc_raw_reads:
         directory_check2 = "output/3.QCsRmAdaptors"
     output: "output/0.LOGs/logPreQCs_{sample}.log"
     message: "QC of raw reads on sample {wildcards.sample} files {input.fq1} {input.fq2}"
+    threads: 1
     conda:
         "10xmethylomes"
     shell: "fastqc --quiet -o output/1.QCs/ {input.fq1} {input.fq2} > {output}"
@@ -96,6 +98,7 @@ rule clean_adapters:
         fq2 = "output/2.ProcessedReads/{sample}_R2_clean.fastq.gz"
     log: "output/0.LOGs/logAdap_{sample}.log"
     message: "Trimming adapters on sample {wildcards.sample} files {input.fq1} {input.fq2}"
+    threads: 1
     conda:
         "10xmethylomes"
     shell:
@@ -110,6 +113,7 @@ rule fastqc_clean_reads:
         directory_check = "output/1.QCs",
         directory_check2 = "output/3.QCsRmAdaptors"
     output: "output/0.LOGs/logPostQCs_{sample}.log"
+    threads: 1
     message: "QC of trimmed reads on sample {wildcards.sample} files {input.fq1} {input.fq2}"
     conda:
         "10xmethylomes"
@@ -127,9 +131,9 @@ rule bowtie2_map:
     log: "output/0.LOGs/logBowtie_{sample}.log"
     conda:
         "bulkatac"
-    threads: 12
+    threads: 14
     shell:
-        "(bowtie2 -q --threads {threads} -X2000 -x {index} -1 {input.fq1} -2 {input.fq2} | "
+        "(bowtie2 -q --threads 12 -X2000 -x {index} -1 {input.fq1} -2 {input.fq2} | "
         "samtools view -bSu - | "
         "samtools sort -T {wildcards.sample}_sorted - > {output}) > {log}"
 
@@ -137,6 +141,7 @@ rule flagStats_mapped:
     input: "output/4.Alignment/mapped/{sample}.bam"
     output: "output/4.Alignment/mapped/{sample}.flagStats"
     message: "Flagstat mapped {wildcards.sample}"
+    threads: 1
     conda:
         "bulkatac"
     shell: "samtools flagstat {input} > {output}"
@@ -157,6 +162,7 @@ rule flagStats_pairs:
     input: "output/4.Alignment/mapped_pairs/{sample}_pairs.bam"
     output: "output/4.Alignment/mapped_pairs/{sample}_pairs.flagStats"
     message: "Flagstat pairs {wildcards.sample}"
+    threads: 1
     conda:
         "bulkatac"
     shell: "samtools flagstat {input} > {output}"
@@ -175,6 +181,7 @@ rule flagStats_dedup:
     input: "output/4.Alignment/mapped_pairs_dedup/{sample}_pairs_dedup.bam"
     output: "output/4.Alignment/mapped_pairs_dedup/{sample}_pairs_dedup.flagStats"
     message: "Flagstat dedup {wildcards.sample}"
+    threads: 1
     conda:
         "bulkatac"
     shell: "samtools flagstat {input} > {output}"
@@ -185,6 +192,7 @@ rule filter_blacklistedRegions:
         proper = temp("output/4.Alignment/mapped_pairs_dedup_filt/{sample}_pairs_dedup_filt.bam"),
         crap = temp("output/4.Alignment/mapped_pairs_dedup_filt/{sample}_pairs_dedup_filt.crap")
     message: "Filter out blacklisted regions for {wildcards.sample}"
+    threads: 1
     conda:
         "bulkatac"
     shell: "samtools view -q 30 -L {blacklisted} -U {output.proper} -b {input} > {output.crap}"
@@ -193,12 +201,14 @@ rule flagStats_filt:
     input: "output/4.Alignment/mapped_pairs_dedup_filt/{sample}_pairs_dedup_filt.bam"
     output: "output/4.Alignment/mapped_pairs_dedup_filt/{sample}_pairs_dedup_filt.flagStats"
     message: "Flagstat for filtered {wildcards.sample}"
+    threads: 1
     shell: "samtools flagstat {input} > {output}"
 
 rule indx_filt:
     input: "output/4.Alignment/mapped_pairs_dedup_filt/{sample}_pairs_dedup_filt.bam"
     output: temp("output/4.Alignment/mapped_pairs_dedup_filt/{sample}_pairs_dedup_filt.bam.bai")
     message: "Index the intermitent (filtered) bam file for {wildcards.sample}"
+    threads: 1
     conda:
         "bulkatac"
     shell: "samtools index {input}"
@@ -209,6 +219,7 @@ rule count_mitoReads:
         bai = "output/4.Alignment/mapped_pairs_dedup_filt/{sample}_pairs_dedup_filt.bam.bai"
     output: "output/4.Alignment/mapped_pairs_dedup_filt_mitocounts/{sample}_pairs_dedup_filt.mitoReads"
     message: "Count the mito reads of {wildcards.sample}"
+    threads: 1
     conda:
         "bulkatac"
     shell: "samtools view -c {input.bam} chrM > {output}"
@@ -219,6 +230,7 @@ rule filter_mitoReads:
         proper = "output/4.Alignment/mapped_pairs_dedup_filt_noMT/{sample}_pairs_dedup_filt_noMT.bam",
         crap = temp("output/4.Alignment/mapped_pairs_dedup_filt_noMT/{sample}_pairs_dedup_filt_noMT.crap")
     message: "Remove the mito reads of {wildcards.sample}"
+    threads: 1
     conda:
         "bulkatac"
     shell: "samtools view -q 30 -L {blacklistedMito} -U {output.proper} -b {input} > {output.crap}"
@@ -227,6 +239,7 @@ rule flagStats_noMT:
     input: "output/4.Alignment/mapped_pairs_dedup_filt_noMT/{sample}_pairs_dedup_filt_noMT.bam"
     output: "output/4.Alignment/mapped_pairs_dedup_filt_noMT/{sample}_pairs_dedup_filt_noMT.flagStats"
     message: "Flagstat of the final bam {wildcards.sample}"
+    threads: 1
     conda:
         "bulkatac"
     shell: "samtools flagstat {input} > {output}"
@@ -235,6 +248,7 @@ rule indx_noMT:
     input: "output/4.Alignment/mapped_pairs_dedup_filt_noMT/{sample}_pairs_dedup_filt_noMT.bam"
     output: "output/4.Alignment/mapped_pairs_dedup_filt_noMT/{sample}_pairs_dedup_filt_noMT.bam.bai"
     message: "Index the final bam file for {wildcards.sample}"
+    threads: 1
     conda:
         "bulkatac"
     shell: "samtools index {input}"
@@ -259,6 +273,7 @@ rule readsInPromoters:
         bai = "output/4.Alignment/mapped_pairs_dedup_filt_noMT/{sample}_pairs_dedup_filt_noMT.bam.bai"
     output: "output/4.Alignment/readsInProm/{sample}_pairs_dedup_filt_noMT.ReadsInProm"
     message: "Count the reads overlapping promoters for {wildcards.sample}"
+    threads: 1
     conda:
         "bulkatac"
     shell: "samtools view -c -L {promoters} -b {input.bam} > {output}"
@@ -270,6 +285,7 @@ rule macs2PeakCallingNFR:
     output: "output/4.Alignment/Peaks/{sample}_pairs_dedup_filt_noMT.NFR_peaks.narrowPeak"
     message: "Call NFR peaks for {wildcards.sample}"
     log: "output/0.LOGs/logMACS2NFR_{sample}.log"
+    threads: 1
     params:
         nm = "output/4.Alignment/Peaks/{sample}_pairs_dedup_filt_noMT.NFR"
     conda:
@@ -283,6 +299,7 @@ rule macs2PeakCallingBAMPE:
     output: "output/4.Alignment/Peaks/{sample}_pairs_dedup_filt_noMT.BAMPE_peaks.narrowPeak"
     message: "Call BAMPE peaks for {wildcards.sample}"
     log: "output/0.LOGs/logMACS2BAMPE_{sample}.log"
+    threads: 1
     params:
         nm = "output/4.Alignment/Peaks/{sample}_pairs_dedup_filt_noMT.BAMPE"
     conda:
@@ -297,6 +314,7 @@ rule NFR_readsInPeaks:
         rip = "output/4.Alignment/Peaks/{sample}_pairs_dedup_filt_noMT.ReadsInNFRpeaks",
         ripop = "output/4.Alignment/Peaks/{sample}_pairs_dedup_filt_noMT.ReadsInNFRpeaks_overProm"
     message: "Count reads overlapping NFR peaks for {wildcards.sample}"
+    threads: 3
     conda:
         "bulkatac"
     shell:
@@ -311,6 +329,7 @@ rule BAMPE_readsInPeaks:
         rip = "output/4.Alignment/Peaks/{sample}_pairs_dedup_filt_noMT.ReadsInBAMPEpeaks",
         ripop = "output/4.Alignment/Peaks/{sample}_pairs_dedup_filt_noMT.ReadsInBAMPEpeaks_overProm"
     message: "Count reads overlapping BAMPE peaks for {wildcards.sample}"
+    threads: 3
     conda:
         "bulkatac"
     shell:
@@ -323,6 +342,7 @@ rule generalPeakLandscape_readsInPeaks:
         rip = "output/4.Alignment/GeneralPeakLandscape/{sample}_pairs_dedup_filt_noMT.ReadsInGeneralPeakLandscape",
         ripop = "output/4.Alignment/GeneralPeakLandscape/{sample}_pairs_dedup_filt_noMT.ReadsInGeneralPeakLandscape_overProm"
     message: "Count reads overlapping peaks called on gold standard sample for {wildcards.sample}"
+    threads: 3
     conda:
         "bulkatac"
     shell:
@@ -335,6 +355,7 @@ rule OliviersPeakLanscape_readsInPeaks:
         rip = "output/4.Alignment/OliviersPeakLanscape/{sample}_pairs_dedup_filt_noMT.ReadsInOliviersPeakLanscape",
         ripop = "output/4.Alignment/OliviersPeakLanscape/{sample}_pairs_dedup_filt_noMT.ReadsInOliviersPeakLanscape_overProm"
     message: "Count reads overlapping peaks called on gold standard sample for {wildcards.sample}"
+    threads: 3
     conda:
         "bulkatac"
     shell:
@@ -348,6 +369,7 @@ rule calculateNumberOfReads:
     input: "output/4.Alignment/mapped_pairs_dedup_filt_noMT/{sample}_pairs_dedup_filt_noMT.flagStats"
     output: "output/4.Alignment/mapped_pairs_dedup_filt_noMT/{sample}.noOfReads"
     message: "Calculate number of reads for {wildcards.sample}"
+    threads: 2
     shell: "grep QC {input} | sed 's/ .*//g' > {output}"
 
 shell.executable('/bin/bash')
@@ -358,6 +380,7 @@ rule calculateFRIPs:
         NoOfReads = "output/4.Alignment/mapped_pairs_dedup_filt_noMT/{sample}.noOfReads"
     output: "output/4.Alignment/GeneralPeakLandscape/{sample}_pairs_dedup_filt_noMT.FRIP"
     message: "Calculate number of reads for {wildcards.sample}"
+    threads: 6
     shell: "cat <(echo -e 'RL\tFRIP') "
             "<(paste <(echo {wildcards.sample}) "
             "<(paste <(cat {input.NoOfReadsOverPeaks}) <(echo '/') <(cat {input.NoOfReads}) <(echo '*100') | bc -l ) > {output})"
@@ -368,6 +391,7 @@ rule calculateFRIPs_OliviersLandscape:
         NoOfReads = "output/4.Alignment/mapped_pairs_dedup_filt_noMT/{sample}.noOfReads"
     output: "output/4.Alignment/OliviersPeakLanscape/{sample}_pairs_dedup_filt_noMT.FRIPOlivier"
     message: "Calculate number of reads for {wildcards.sample}"
+    threads: 6
     shell: "cat <(echo -e 'RL\tFRIP') "
             "<(paste <(echo {wildcards.sample}) "
             "<(paste <(cat {input.NoOfReadsOverPeaks}) <(echo '/') <(cat {input.NoOfReads}) <(echo '*100') | bc -l ) > {output})"
@@ -378,6 +402,7 @@ rule calculateFRIPromoters: # Add this one in to the file for re-computation
         NoOfReads = "output/4.Alignment/mapped_pairs_dedup_filt_noMT/{sample}.noOfReads"
     output: "output/4.Alignment/readsInProm/{sample}_pairs_dedup_filt_noMT.FRIPromoters"
     message: "Calculate percentage of reads in promoters for {wildcards.sample}"
+    threads: 6
     shell: "cat <(echo -e 'RL\tFRIP') "
             "<(paste <(echo {wildcards.sample}) "
             "<(paste <(cat {input.NoOfReadsOverPromoters}) <(echo '/') <(cat {input.NoOfReads}) <(echo '*100') | bc -l ) > {output})"
@@ -393,6 +418,7 @@ rule combineBamFlagstats:
         nomt = "output/4.Alignment/mapped_pairs_dedup_filt_noMT/{sample}_pairs_dedup_filt_noMT.flagStats"
     output: "output/4.Alignment/flagstatsCombined/{sample}.flagStats_combined"
     message: "Combine FlagStats per sample for {wildcards.sample}"
+    threads: 6
     shell: "cat <(echo -e 'RL\tTotalReads\tMapped\tPaired\tDedup\tFilt\tNoMT') "
             "<(paste <(echo {wildcards.sample}) "
             "<(grep QC {input.mapped} | sed 's/ .*//g') "
@@ -409,6 +435,7 @@ rule insertSize:
     input: "output/4.Alignment/mapped_pairs_dedup_filt_noMT/{sample}_pairs_dedup_filt_noMT.bam"
     output: "output/4.Alignment/InsertSizes/{sample}_pairs_dedup_filt_noMT.InsertSizesBAMPE"
     message: "Estimate insert size for {wildcards.sample}"
+    threads: 3
     conda:
         "bulkatac"
     shell: "samtools view -f66 {input} | cut -f 9 | sed 's/^-//' > {output}"
@@ -417,6 +444,7 @@ rule insertSizePlot:
     input: 
         "output/4.Alignment/InsertSizes/{sample}_pairs_dedup_filt_noMT.InsertSizesBAMPE"
     output: "output/4.Alignment/InsertSizes/{sample}_pairs_dedup_filt_noMT.InsertSizesBAMPE_hist.png"
+    threads: 1
     message: "Plot distribution of insert sizes for {wildcards.sample}"
     shell: "Rscript {histogram_script} {input} {output}"
 
@@ -429,6 +457,7 @@ rule calculateProportions:
         script = "/home/dmakosa/working_data_04/Bulk_ATAC_QCmetrics_tool/snakemake/helper_calculateProportions.sh"
     output: "output/5.SubsamplingOfFiltered/0.proportions/{sample}.proportions"
     message: "Calculate subsampling proportions for {wildcards.sample}"
+    threads: 4
     shell: "sh {input.script} {input.numberOfReads} {wildcards.sample} {output}"
 
 rule subsampleFilteredBAM:
@@ -448,6 +477,7 @@ rule subsampleCallPeaks:
         proportions = "output/5.SubsamplingOfFiltered/0.proportions/{sample}.proportions"
     output: "output/5.SubsamplingOfFiltered/2.callpeaks/NFRPeaks_{sample}.txt"
     message: "Subsample filtered bam file for {wildcards.sample}"
+    threads: 2
     conda: "deeptoolsenv"
     shell: "sh {input.script} {input.proportions} {wildcards.sample} {output} {size}"
 
@@ -458,6 +488,7 @@ rule subsampleReadsInPeaks:
         callingPeaksComplete = "output/5.SubsamplingOfFiltered/2.callpeaks/NFRPeaks_{sample}.txt"
     output: "output/5.SubsamplingOfFiltered/3.readsInPeaks/ReadsInPeaks_{sample}.txt"
     message: "Count reads overlapping NFR peaks for subsampled {wildcards.sample}"
+    threads: 4
     conda: "bulkatac"
     shell: "sh {input.script} {input.proportions} {wildcards.sample} {output} {promoters}"
 
@@ -467,6 +498,7 @@ rule subsampleNumberOfReads:
         proportions = "output/5.SubsamplingOfFiltered/0.proportions/{sample}.proportions",
         subsamplingComplete = "output/5.SubsamplingOfFiltered/1.subsampling/subsampled_{sample}.txt"
     output: "output/5.SubsamplingOfFiltered/3.readsInPeaks/NumberOfReads_{sample}.txt"
+    threads: 2
     message: "Calculate number of reads for subsampled {wildcards.sample}"
     shell: "sh {input.script} {input.proportions} {wildcards.sample} {output}"
 
@@ -476,6 +508,7 @@ rule subsampleSummary:
         expand("output/5.SubsamplingOfFiltered/3.readsInPeaks/ReadsInPeaks_{sample}.txt", sample=config["samples"])
     output: "output/5.SubsamplingOfFiltered/4.summary/summary.tsv"
     message: "Summarize subsampled samples"
+    threads: 6
     shell: "cat <(echo -e 'SampleNOR\tNoOfReads\tSampleRIP\tReadsInPeaks') "
             "<(paste <(printf '%s\n' output/5.SubsamplingOfFiltered/3.readsInPeaks/sub*NoOfReads) "
             "<(cat output/5.SubsamplingOfFiltered/3.readsInPeaks/sub*NoOfReads) "
