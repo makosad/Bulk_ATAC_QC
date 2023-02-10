@@ -1,0 +1,1 @@
+~/working_data_04/Bulk_ATAC_QCmetrics_tool/data/mm10_peaklandscape.bed comes from /home/dmakosa/working_data_02/issaac/rtms/sub_atac/sub_Sham08_14d_PFC_snATAC/outs/peaks.bed
