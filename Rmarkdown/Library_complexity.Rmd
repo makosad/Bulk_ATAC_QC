@@ -1,0 +1,22 @@
+---
+title: "Library_complexity.Rmd"
+author: "makosad"
+date: "27/08/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Estimate library complexity
+```{r}
+library(ATACseqQC)
+
+estimateLibComplexity(readsDupFreq(bamfile))
+```
+2:46
+Fragment size distribution
+```{r}
+fragSize <- fragSizeDist(bamfile, bamfile.labels)
+```

@@ -1,0 +1,38 @@
+############################################################################
+#
+'analyzeBulkATACseqRLs_AllReads.sh'
+
+   Analyze Bulk ATACseq data from pair end sequencing experiements through these steps
+	1. QCs
+	2. Clean Adaptors
+	3. QCs after adaptors
+	4. Bowtie and samtools sort
+	5. Flag Stats
+	6. Count MT reads
+	7. Data is PE ---> $pairs\n\tFilter alignment, proper Pairs and stats
+	8. Remove PCR dups and stats
+	9. Intercept BlackListed regions
+	11. Remove Intermediate Files, some bam also
+	12. Counting reads in promoters
+	13. MACS2:::params for Tn5 insert sites, params ENCODE pipe for NFRs 
+	14. MACS2:::params for PE fragments TLEN  
+	15. Reads in Background
+
+   Example how to run:
+	 ./1.analyzeRLs_AllReads.sh /dd_rundata/novaseq/Runs/190608_A00690_H7V22DRXX_004/Unaligned/snATAC/RL1753_2019_06_08_bulkATAC_20190527_C4593_50000nuclei_37deg_5ulTn5_S1_R1_001.fastq.gz /home/aalvarez/Bulk_ATAC_QCmetrics_tool/output > RL1753_allReads.log  2>&1 & 
+
+
+'subSampling_bulkATACseq_RLs.sh'
+
+   Dowsampling bam file, calculate and plot some statistics
+	Step 1:: Calcule subsampling fractions
+	Step 2:: Subsampling bam file
+	Step 3:: Summarize subsampling data per RL
+	Step 4:: Plots per RL	
+
+    Example how to run:
+	# Edit 3 lines of the script itself, everything explained inside and run:
+	./subSampling_bulkATACseq_RLs.sh > RL1753_subSampling.log 2>&1 &
+
+
+

@@ -1,6 +1,6 @@
 configfile: "config.yaml"
 
-# /bin/nice -n5 snakemake -s /home/dmakosa/working_data_04/Bulk_ATAC_QCmetrics_tool/snakemake/bulkATAC.smk --use-conda --default-resources "tmpdir='/scratchfs/dmakosa/tmp'" --cores 64
+# /bin/nice -n10 snakemake -s /home/dmakosa/working_data_04/Bulk_ATAC_QCmetrics_tool/snakemake/bulkATAC.smk --use-conda --default-resources "tmpdir='/scratchfs/dmakosa/tmp'" --cores 20
 # snakemake --forceall --rulegraph -s test2.smk | dot -Tpdf > dag.pdf
 
 # ---- DICTIONARIES ---- #
@@ -16,6 +16,7 @@ promoters = config["promoters"]
 size = config["size"] 
 generalPeakLanscape = config["generalPeakLanscape"]
 OliviersPeakLanscape = config["OliviersPeakLanscape"] 
+rRNA_flanking = config["rRNA_flanking"]
 
 
 # ---- TARGET RULE ---- # 
@@ -34,6 +35,7 @@ rule all:
         expand("output/4.Alignment/OliviersPeakLanscape/{sample}_pairs_dedup_filt_noMT.ReadsInOliviersPeakLanscape", sample=config["samples"]),
         expand("output/4.Alignment/OliviersPeakLanscape/{sample}_pairs_dedup_filt_noMT.ReadsInOliviersPeakLanscape_overProm", sample=config["samples"]),
         expand("output/4.Alignment/GeneralPeakLandscape/{sample}_pairs_dedup_filt_noMT.FRIP", sample=config["samples"]),
+        expand("output/4.Alignment/readsInrRNA/{sample}_pairs_dedup_filt_noMT.FRIrRNA", sample=config["samples"]),
         expand("output/4.Alignment/InsertSizes/{sample}_pairs_dedup_filt_noMT.InsertSizesBAMPE_hist.png", sample=config["samples"]),
         expand("output/4.Alignment/InsertSizes/{sample}_pairs_dedup_filt_noMT.InsertSizesBAMPE", sample=config["samples"]),
         expand("output/4.Alignment/Peaks/{sample}_pairs_dedup_filt_noMT.ReadsInNFRpeaks_overProm", sample=config["samples"]),
@@ -44,6 +46,7 @@ rule all:
         expand("output/4.Alignment/Peaks/{sample}_pairs_dedup_filt_noMT.ReadsInNFRpeaks", sample=config["samples"]),
         expand("output/4.Alignment/Peaks/{sample}_pairs_dedup_filt_noMT.BAMPE_peaks.narrowPeak", sample=config["samples"]),
         expand("output/4.Alignment/Peaks/{sample}_pairs_dedup_filt_noMT.NFR_peaks.narrowPeak", sample=config["samples"]),
+        expand("output/4.Alignment/readsInrRNA/{sample}_pairs_dedup_filt_noMT.ReadsInrRNA", sample=config["samples"]),
         expand("output/4.Alignment/readsInProm/{sample}_pairs_dedup_filt_noMT.ReadsInProm", sample=config["samples"]),
         expand("output/4.Alignment/coverage/{sample}_pairs_dedup_filt_noMT.coverage.bigwig", sample=config["samples"]),
         expand("output/4.Alignment/mapped_pairs_dedup_filt_mitocounts/{sample}_pairs_dedup_filt.mitoReads", sample=config["samples"]),
@@ -362,6 +365,16 @@ rule OliviersPeakLanscape_readsInPeaks:
         "cut -f1-3 {OliviersPeakLanscape} | samtools view -L - -c -b {input} > {output.rip};"
         "cut -f1-3 {OliviersPeakLanscape} | /home/dmakosa/working_data_01/apps/miniconda3/envs/deeptoolsenv/bin/intersectBed -u -wa -a - -b {promoters} | samtools view -L - -c -b {input} > {output.ripop}"
 
+rule readsInrRNA:
+    input:
+        bam = "output/4.Alignment/mapped_pairs_dedup_filt_noMT/{sample}_pairs_dedup_filt_noMT.bam",
+        bai = "output/4.Alignment/mapped_pairs_dedup_filt_noMT/{sample}_pairs_dedup_filt_noMT.bam.bai"
+    output: "output/4.Alignment/readsInrRNA/{sample}_pairs_dedup_filt_noMT.ReadsInrRNA"
+    message: "Count the reads overlapping rRNA for {wildcards.sample}"
+    threads: 1
+    conda:
+        "bulkatac"
+    shell: "samtools view -c -L {rRNA_flanking} -b {input.bam} > {output}"
 
 # ---- CALCULATE FRIPs ---- # 
 
@@ -406,6 +419,17 @@ rule calculateFRIPromoters: # Add this one in to the file for re-computation
     shell: "cat <(echo -e 'RL\tFRIP') "
             "<(paste <(echo {wildcards.sample}) "
             "<(paste <(cat {input.NoOfReadsOverPromoters}) <(echo '/') <(cat {input.NoOfReads}) <(echo '*100') | bc -l ) > {output})"
+
+rule calculateFRIrRNA: # Add this one in to the file for re-computation
+    input:
+        NoOfReadsOverrRNA = "output/4.Alignment/readsInrRNA/{sample}_pairs_dedup_filt_noMT.ReadsInrRNA",
+        NoOfReads = "output/4.Alignment/mapped_pairs_dedup_filt_noMT/{sample}.noOfReads"
+    output: "output/4.Alignment/readsInrRNA/{sample}_pairs_dedup_filt_noMT.FRIrRNA"
+    message: "Calculate percentage of reads in rRNA for {wildcards.sample}"
+    threads: 6
+    shell: "cat <(echo -e 'RL\tFRIP') "
+            "<(paste <(echo {wildcards.sample}) "
+            "<(paste <(cat {input.NoOfReadsOverrRNA}) <(echo '/') <(cat {input.NoOfReads}) <(echo '*100') | bc -l ) > {output})"
 
 # ---- CONCATENATE BAM FLAGSTATs ---- # 
 

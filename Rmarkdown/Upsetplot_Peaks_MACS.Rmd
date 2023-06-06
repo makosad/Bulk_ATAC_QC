@@ -1,0 +1,59 @@
+---
+title: "Upsetplot_Peaks MACS"
+author: "Sam"
+date: "10/26/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(GenomicRanges)
+library(magrittr)
+library(stringr)
+library(UpSetR)
+
+# Create a list of MACS2 excel files
+macs_files <- list.files("/scratchfs/dmakosa/atac_optimization",
+                       pattern = "_PeaksInProm.narrowPeak", full.names = TRUE)
+
+# Function to read MACS2 excel files into GRanges object
+macs_to_gr <- function(peak_file){
+    
+    dat <- read.table(peak_file)
+    gr <- GRanges(seqnames = dat$V1, ranges = IRanges(dat$V2, dat$V3))
+    return(gr)
+    Upset
+}
+
+# Read all data into a GRangesList 
+grl <- lapply(macs_files, macs_to_gr) %>% GRangesList()
+names(grl) <- basename(macs_files)
+
+# Merge all peaks into commmon peak set
+merged_peaks_gr <- unlist(grl) %>% reduce()
+
+# Create matrix of presence/absence of peaks for each samples/library
+get_peak_hits <- function(x){
+    
+    hits <- overlapsAny(merged_peaks_gr, grl[[x]])
+    # convert to numeric 1/0
+    hits <- hits + 0
+    return(hits)
+}
+
+hits_table <- lapply(1:length(grl), get_peak_hits) %>% 
+    do.call(cbind, .) %>% data.frame()
+
+colnames(hits_table) <- names(grl)
+rownames(hits_table) <- str_c(seqnames(merged_peaks_gr), ":",
+                              start(merged_peaks_gr), "-",
+                              end(merged_peaks_gr))
+
+    
+# Plot upset
+upset(hits_table,order.by = "freq",keep.order = TRUE,sets = rev(names(grl)))
+```
