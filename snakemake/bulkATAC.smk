@@ -1,7 +1,10 @@
-configfile: "config.yaml"
+configfile: "/home/dmakosa/working_data_04/Bulk_ATAC_QCmetrics_tool/snakemake/config.yaml"
 
 # /bin/nice -n10 snakemake -s /home/dmakosa/working_data_04/Bulk_ATAC_QCmetrics_tool/snakemake/bulkATAC.smk --use-conda --default-resources "tmpdir='/scratchfs/dmakosa/tmp'" --cores 20
 # snakemake --forceall --rulegraph -s test2.smk | dot -Tpdf > dag.pdf
+
+# get sample names for config file with:
+# ls data/*gz | sed s,'_R[1-3].*',,g | sed s,'data/','  - ',g | uniq 
 
 # ---- DICTIONARIES ---- #
 READS = ["R1", "R2"]
@@ -157,9 +160,9 @@ rule properPairs:
     output: temp("output/4.Alignment/mapped_pairs/{sample}_pairs.bam")
     message: "Output proper pairs for {wildcards.sample}"
     conda:
-        "bulkatac"
+        "10xmethylomes"
     threads: 12
-    shell: "/home/sbuckberry/working_data_01/bin/sambamba_v0.6.3 view -t {threads} -f bam -F 'proper_pair' {input} -o {output}"
+    shell: "sambamba view -t {threads} -f bam -F 'proper_pair' {input} -o {output}"
 
 rule flagStats_pairs:
     input: "output/4.Alignment/mapped_pairs/{sample}_pairs.bam"
@@ -176,9 +179,9 @@ rule deduplicate:
     message: "Deduplicate reads of {wildcards.sample}"
     log: "output/0.LOGs/logDedup_{sample}.log"
     conda:
-        "bulkatac"
+        "10xmethylomes"
     threads: 12
-    shell: "/home/sbuckberry/working_data_01/bin/sambamba_v0.6.3 markdup -p -t {threads} --hash-table-size=1000000 {input} {output} 2> {log}"
+    shell: "sambamba markdup -p -t {threads} --hash-table-size=1000000 {input} {output} 2> {log}"
 
 rule flagStats_dedup:
     input: "output/4.Alignment/mapped_pairs_dedup/{sample}_pairs_dedup.bam"

@@ -1,0 +1,220 @@
+samples:
+  # - RL2544
+  # - RL2545
+  # - RL2546
+  # - RL2547
+  # - RL2554
+  # - RL2555
+  # - RL2618
+  # - RL2619
+  # - RL2620
+  # - RL2621
+  # - RL2622
+  # - RL2623
+  # - RL2624
+  # - RL2625
+  # - RL3769_2023_01_27_Brain_37degC_S69
+  # - RL3770_2023_01_27_Muscle_37degC_S70
+  # - RL3771_2023_01_27_Heart_37degC_S71
+  # - RL2626
+  # - RL2627
+  # - RL2628
+  # - RL2629
+  # - RL2630
+  # - RL2631
+  # - RL2632
+  # - RL2633
+  # - RL2634
+  # - RL2930_2021_12_31_Dil_low_0_50_55degC_TD_fresh_S25
+  # - RL2931_2021_12_31_Dil_low_1_00_55degC_TD_fresh_S26
+  # - RL2932_2021_12_31_Dil_low_2_00_55degC_TD_fresh_S27
+  # - RL2933_2021_12_31_Dil_low_0_50_37degC_TD_fresh_S28
+  # - RL2934_2021_12_31_Dil_low_1_00_37degC_TD_fresh_S29
+  # - RL2935_2021_12_31_Dil_low_2_00_37degC_TD_fresh_S30
+  # - RL2936_2021_12_31_Dil_low_0_50_37degC_SHAREseq_fresh_S31
+  # - RL2937_2021_12_31_Dil_low_1_00_37degC_SHAREseq_fresh_S32
+  # - RL2938_2021_12_31_Dil_low_2_00_37degC_SHAREseq_fresh_S33
+  # - RL2978_fresh_30deg_1ulTn5_S33
+  # - RL2979_fresh_30deg_2ulTn5_S34
+  # - RL2980_fixed_30deg_1ulTn5_S35
+  # - RL2981_fixed_30deg_2ulTn5_S36
+  # - RL2982_fresh_37deg_1ulTn5_S37
+  # - RL2983_fresh_37deg_2ulTn5_S38
+  # - RL3769_2023_01_27_Brain_37degC_S69
+  # - RL3770_2023_01_27_Muscle_37degC_S70
+  # - RL3771_2023_01_27_Heart_37degC_S71
+  # - Sham08_14d_PFC_snATAC
+  # - RL3753_S7
+  # - RL3754_S8
+  # - RL3755_S9
+  # - RL3756_S10
+  # - RL3761_S15
+  # - RL3762_S16
+  # - RL3763_S17
+  # - RL3764_S18
+  # - RL3669_2023_01_18_ATACbuffer1_6DMF_highSalt_Tween_S72
+  # - RL3670_2023_01_18_ATACbuffer2_8DMF_highSalt_Tween_S73
+  # - RL3671_2023_01_18_ATACbuffer3_10DMF_highSalt_Tween_S74
+  # - RL3672_2023_01_18_ATACbuffer4_12DMF_highSalt_Tween_S75
+  # - RL3673_2023_01_18_ATACbuffer5_14DMF_highSalt_Tween_S76
+  # - RL3674_2023_01_18_ATACbuffer6_16DMF_highSalt_Tween_S77
+  # - RL3675_2023_01_18_ATACbuffer7_18DMF_highSalt_Tween_S78
+  # - RL3676_2023_01_18_ATACbuffer8_20DMF_highSalt_Tween_S79
+  # - RL3677_2023_01_18_ATACbuffer9_6DMF_noSalt_Tween_S80
+  # - RL3678_2023_01_18_ATACbuffer10_8DMF_noSalt_Tween_S81
+  # - RL3679_2023_01_18_ATACbuffer11_10DMF_noSalt_Tween_S82
+  # - RL3680_2023_01_18_ATACbuffer12_12DMF_noSalt_Tween_S83
+  # - RL3681_2023_01_18_ATACbuffer13_14DMF_noSalt_Tween_S84
+  # - RL3682_2023_01_18_ATACbuffer14_16DMF_noSalt_Tween_S85
+  # - RL3683_2023_01_18_ATACbuffer15_18DMF_noSalt_Tween_S86
+  # - RL3684_2023_01_18_ATACbuffer16_20DMF_noSalt_Tween_S87
+  # - RL3685_2023_01_18_ATACbuffer1_6DMF_highSalt_NP40_S88
+  # - RL3686_2023_01_18_ATACbuffer2_8DMF_highSalt_NP40_S89
+  # - RL3687_2023_01_18_ATACbuffer3_10DMF_highSalt_NP40_S90
+  # - RL3688_2023_01_18_ATACbuffer4_12DMF_highSalt_NP40_S91
+  # - RL3689_2023_01_18_ATACbuffer5_14DMF_highSalt_NP40_S92
+  # - RL3690_2023_01_18_ATACbuffer6_16DMF_highSalt_NP40_S93
+  # - RL3691_2023_01_18_ATACbuffer7_18DMF_highSalt_NP40_S94
+  # - RL3692_2023_01_18_ATACbuffer8_20DMF_highSalt_NP40_S95
+  # - RL3693_2023_01_18_ATACbuffer9_6DMF_noSalt_NP40_S96
+  # - RL3694_2023_01_18_ATACbuffer10_8DMF_noSalt_NP40_S97
+  # - RL3695_2023_01_18_ATACbuffer11_10DMF_noSalt_NP40_S98
+  # - RL3696_2023_01_18_ATACbuffer12_12DMF_noSalt_NP40_S99
+  # - RL3697_2023_01_18_ATACbuffer13_14DMF_noSalt_NP40_S100
+  # - RL3698_2023_01_18_ATACbuffer14_16DMF_noSalt_NP40_S101
+  # - RL3699_2023_01_18_ATACbuffer15_18DMF_noSalt_NP40_S102
+  # - RL3700_2023_01_18_ATACbuffer16_20DMF_noSalt_NP40_S103
+  # - RL3701_2023_01_18_OC_Tn5_0_5ulTn5_S104
+  # - RL3702_2023_01_18_OC_pATn5_0_5ulTn5_S105
+  # - RL3703_2023_01_18_DM_HSTn5_0_5ulTn5_S106
+  # - RL3704_2023_01_18_DM_HSTn5_2_5ulTn5_S107
+  # - Sham08_14d_PFC_snATAC
+  # - RL3811_ATAC_snoverISSAAC_S1
+  # - RL3839_ATAC_HomogenizationBuffer_biotinRT_30degCHybridTAGandNOexo_S9
+  # - RL3840_ATAC_10xLysis_biotinRT_30degCHybridTAGandNOexo_S10
+  # - RL3841_ATAC_HomogenizationBuffer_indexedRT_21_30degCHybridTAGandNOexo_S11
+  # - RL3842_ATAC_10xLysis_indexedRT_22_30degCHybridTAGandNOexo_S12
+  # - RL3843_ATAC_HomogenizationBuffer_biotinRT_30degCHybridTAGand30degGAPandEXO_S13
+  # - RL3844_ATAC_10xLysis_biotinRT_30degCHybridTAGand30degGAPandEXO_S14
+  # - RL3845_ATAC_HomogenizationBuffer_indexedRT_23_30degCHybridTAGand30degGAPandEXO_S15
+  # - RL3846_ATAC_10xLysis_indexedRT_24_30degCHybridTAGand30degGAPandEXO_S16
+  # - RL3853_ATAC_30degCHybridTAGandNOexo_50ul_glycerolRT_IndexTAG_6A_S23
+  # - RL3854_ATAC_30degCHybridTAGandNOexo_100ul_glycerolRT_IndexTAG_6B_S24
+  # - RL3855_ATAC_30degCHybridTAGand30degGAPonly_50ul_glycerolRT_IndexTAG_6C_S25
+  # - RL3856_ATAC_30degCHybridTAGand30degGAPandEXO_50ul_glycerolRT_IndexTAG_6D_S26
+  # - RL3857_ATAC_30degCHybridTAGand30degGAPonly_100ul_glycerolRT_IndexTAG_6E_S27
+  # - RL3858_ATAC_30degCHybridTAGand30degGAPandEXO_100ul_glycerolRT_IndexTAG_6F_S28
+  # - RL3891_ATAC_HIGH_IndexTAG_3A_1ul_indexedRT_17_3ulHIGH_IndexTAG_6A_S17
+  # - RL3892_ATAC_HIGH_IndexTAG_3B_1ul_indexedRT_18_3ulLOW_IndexTAG_6B_S18
+  # - RL3893_ATAC_HIGH_IndexTAG_3C_0v75ul_indexedRT_19_3ulHIGH_IndexTAG_6C_S19
+  # - RL3894_ATAC_HIGH_IndexTAG_3D_0v75ul_indexedRT_20_3ulLOW_IndexTAG_6D_S20
+  # - RL3895_ATAC_LOW_IndexTAG_3E_1ul_indexedRT_21_3ulHIGH_IndexTAG_6E_S21
+  # - RL3896_ATAC_LOW_IndexTAG_3F_1ul_indexedRT_22_3ulLOW_IndexTAG_6F_S22
+  # - RL3897_ATAC_LOW_IndexTAG_3G_0v75ul_indexedRT_23_3ulHIGH_IndexTAG_6G_S23
+  # - RL3898_ATAC_LOW_IndexTAG_3H_0v75ul_indexedRT_24_3ulLOW_IndexTAG_6H_S24
+  # - RL3899_ATAC_HIGH_IndexTAG_3A_1ul_indexedRT_17_1v5ulHIGH_IndexTAG_6A_S25
+  # - RL3900_ATAC_HIGH_IndexTAG_3B_1ul_indexedRT_18_1v5ulLOW_IndexTAG_6B_S26
+  # - RL3901_ATAC_HIGH_IndexTAG_3C_0v75ul_indexedRT_19_1v5ulHIGH_IndexTAG_6C_S27
+  # - RL3902_ATAC_HIGH_IndexTAG_3D_0v75ul_indexedRT_20_1v5ulLOW_IndexTAG_6D_S28
+  # - RL3903_ATAC_LOW_IndexTAG_3E_1ul_indexedRT_21_1v5ulHIGH_IndexTAG_6E_S29
+  # - RL3904_ATAC_LOW_IndexTAG_3F_1ul_indexedRT_22_1v5ulLOW_IndexTAG_6F_S30
+  # - RL3905_ATAC_LOW_IndexTAG_3G_0v75ul_indexedRT_23_1v5ulHIGH_IndexTAG_6G_S31
+  # - RL3906_ATAC_LOW_IndexTAG_3H_0v75ul_indexedRT_24_1v5ulLOW_IndexTAG_6H_S32
+  - RL4461_230518_scifiBuffer_MouseCtx_scifi_S6
+  - RL4464_230518_10xBuffer_MouseCtx_scifi_S9
+  - RL4467_230518_scifiBuffer_MouseCtx_ISSAAC_S12
+  - RL4470_230518_10xBuffer_MouseCtx_ISSAAC_S15
+  - RL4473_230518_scifiBuffer_MouseCtx_scifi_S18
+  - RL4476_230518_10xBuffer_MouseCtx_scifi_S21
+  - RL4479_230518_scifiBuffer_MouseCtx_ISSAAC_S24
+  - RL4482_230518_10xBuffer_MouseCtx_ISSAAC_S27
+  - RL4485_S1
+  - RL4486_S2
+  - RL4487_S3
+  - RL4488_S4
+  - RL4489_S5
+  - RL4490_S6
+  - RL4491_S7
+  - RL4492_S8
+  - RL4493_S9
+  - RL4494_S10
+  - RL4495_S11
+  - RL4496_S12
+  - RL4497_S13
+  - RL4498_S14
+  - RL4499_S15
+  - RL4500_S16
+  - RL4501_S17
+  - RL4502_S18
+  - RL4503_S19
+  - RL4504_S20
+  - RL4505_S21
+  - RL4506_S22
+  - RL4507_S23
+  - RL4508_S24
+
+# Parameters to use for mouse samples
+index:
+  - /home/dmakosa/working_data_04/genomes/mouse/ucsc/mm10/UCSC_mm10_genome_Bowtie2Index/mm10_genome
+
+blacklistedMito:
+  - /home/dmakosa/working_data_04/genomes/mouse/ucsc/mm10/mm10.chrM.size.bed
+
+blacklisted:
+  - /home/dmakosa/working_data_04/genomes/mouse/ucsc/mm10/Blacklistedregions/ENCFF547MET.bed
+
+promoters:
+  - /home/dmakosa/working_data_04/genomes/mouse/ucsc/mm10/Downloaded_additions/Promoters_UCSC_GenesAndPredictions_allGENCODE_VM25_Basic.bed
+
+size:
+  - mm
+
+generalPeakLanscape:
+  - /home/dmakosa/working_data_04/Bulk_ATAC_QCmetrics_tool/data/mm10_peaklandscape.bed
+
+OliviersPeakLanscape:
+  - /home/dmakosa/working_data_04/Bulk_ATAC_QCmetrics_tool/data/RL2202_20M_pairs_dedup_filt_noMT_NFR_peaks.narrowPeak
+
+rRNA_flanking:
+  - /home/dmakosa/working_data_01/apps/10x_referencefiles/refdata-gex-mm10-2020-A_solo2.7.9a/downloaded_additions/rRNA_300bpFlanking.bed
+
+# Human samples
+# samples:
+#   - RL4462_230518_scifiBuffer_HumanPCtx1_scifi_S7
+#   - RL4463_230518_scifiBuffer_HumanPCtx2_scifi_S8
+#   - RL4465_230518_10xBuffer_HumanPCtx1_scifi_S10
+#   - RL4466_230518_10xBuffer_HumanPCtx2_scifi_S11
+#   - RL4468_230518_scifiBuffer_HumanPCtx1_ISSAAC_S13
+#   - RL4469_230518_scifiBuffer_HumanPCtx2_ISSAAC_S14
+#   - RL4471_230518_10xBuffer_HumanPCtx1_ISSAAC_S16
+#   - RL4472_230518_10xBuffer_HumanPCtx2_ISSAAC_S17
+#   - RL4474_230518_scifiBuffer_HumanPCtx1_scifi_S19
+#   - RL4475_230518_scifiBuffer_HumanPCtx2_scifi_S20
+#   - RL4477_230518_10xBuffer_HumanPCtx1_scifi_S22
+#   - RL4478_230518_10xBuffer_HumanPCtx2_scifi_S23
+#   - RL4480_230518_scifiBuffer_HumanPCtx1_ISSAAC_S25
+#   - RL4481_230518_scifiBuffer_HumanPCtx2_ISSAAC_S26
+#   - RL4483_230518_10xBuffer_HumanPCtx1_ISSAAC_S28
+#   - RL4484_230518_10xBuffer_HumanPCtx2_ISSAAC_S29
+
+# Parameters to use for human samples
+# index:
+#   - /home/sbuckberry/working_data_01/genomes/Homo_sapiens/UCSC/hg19/Sequence/Bowtie2Index/genome
+
+# blacklistedMito:
+#   - /home/dmakosa/working_data_04/Bulk_ATAC_QCmetrics_tool/data/M_size.bed
+
+# blacklisted:
+#   - /home/dmakosa/working_data_04/Bulk_ATAC_QCmetrics_tool/data/ENCFF000KJP.bed
+
+# promoters:
+#   - /home/dmakosa/working_data_04/Bulk_ATAC_QCmetrics_tool/data/promoterhg19_2kb.bed
+
+# size:
+#   - hs
+
+# generalPeakLanscape:
+#   - 
+
+
+
